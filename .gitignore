@@ -1,2 +1,3 @@
 *.har
 .DS_Store
+dist/
