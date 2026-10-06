@@ -1,5 +1,8 @@
 // 아스트라(LMS) 로그인 화면(= 로그아웃 상태)에 오면 SSO 로그인 흐름으로 보낸다.
-(() => {
+// 팝업에서 꺼 두면 아무것도 하지 않는다.
+chrome.storage.local.get({ enabled: true }, ({ enabled }) => {
+  if (!enabled) return;
+
   const KEY = "mjuAutoLoginRedirects";
   const WINDOW_MS = 60 * 1000;
   const MAX_REDIRECTS = 2;
@@ -18,4 +21,4 @@
   } catch {}
 
   location.replace("https://lms.mju.ac.kr/ilos/sso/sso_check.jsp");
-})();
+});

@@ -1,6 +1,7 @@
 // 명지대 SSO 페이지
 // - 로그인 화면(어느 명지대 사이트에서 왔든):크롬 비밀번호 관리자에서 계정을 받아 채우고 로그인 버튼을 누른다.
 // - 비밀번호 변경 안내: 방금 자동 로그인한 경우에만 취소 버튼과 같은 주소로 넘어간다.
+// 팝업에서 꺼 두면 아무것도 하지 않는다.
 // 비밀번호는 저장하지 않는다. 상태 표시(제출 시각, 실패 여부)만 localStorage에 둔다.
 (() => {
   const KEY = "mjuAutoLogin";
@@ -24,51 +25,64 @@
     } catch {}
   };
 
-  const params = new URLSearchParams(location.search);
-  const state = load();
+  whenEnabled(run);
 
-  if (location.pathname === "/sso/change/pw") {
-    const id = params.get("cm_cg_id");
-    if (id && state.submittedAt) {
-      clear();
-      location.replace("/sso/auth?cm_cg_id=" + encodeURIComponent(id));
-    }
-    return;
-  }
+  function run() {
+    const params = new URLSearchParams(location.search);
+    const state = load();
 
-  const fields = findLoginFields();
-  if (!fields) return;
-
-  if (state.failed) {
-    showBanner("이전 자동 로그인이 실패해서 멈춰 있습니다. 직접 로그인하세요.", true);
-    return;
-  }
-  // 자동 제출 직후 로그인 화면이 다시 떴다 = 로그인 실패. 계정 잠김을 막기 위해 멈춘다.
-  if (state.submittedAt && Date.now() - state.submittedAt < FAIL_WINDOW_MS) {
-    save({ failed: true });
-    showBanner("자동 로그인이 실패해서 멈췄습니다. 비밀번호가 바뀌었다면 크롬에 저장된 비밀번호를 고친 뒤 다시 켜세요.", true);
-    return;
-  }
-  // 다른 명지대 사이트(아스트라(LMS), MSI 등)에서 넘어온 로그인 화면일 때만 자동 로그인한다.
-  if (!params.get("client_id")) return;
-
-  navigator.credentials
-    .get({ password: true, mediation: "silent" })
-    .then((cred) => {
-      if (!cred || !cred.password) {
-        showBanner("크롬에서 저장된 계정을 받지 못했습니다. 크롬 설정의 '비밀번호 입력 시 화면 잠금 사용'이 꺼져 있는지 확인하세요.");
-        return;
+    if (location.pathname === "/sso/change/pw") {
+      const id = params.get("cm_cg_id");
+      if (id && state.submittedAt) {
+        clear();
+        location.replace("/sso/auth?cm_cg_id=" + encodeURIComponent(id));
       }
-      setValue(fields.userId, cred.id);
-      setValue(fields.password, cred.password);
-      save({ submittedAt: Date.now() });
-      // 암호화는 페이지 스크립트가 제출 시점에 하므로 버튼 클릭으로 그 흐름을 그대로 탄다.
-      if (fields.submit) fields.submit.click();
-      else fields.form.requestSubmit();
-    })
-    .catch(() => {
-      showBanner("크롬에서 저장된 계정을 받는 중 오류가 났습니다. 직접 로그인하세요.");
-    });
+      return;
+    }
+
+    const fields = findLoginFields();
+    if (!fields) return;
+
+    if (state.failed) {
+      showBanner("이전 자동 로그인이 실패해서 멈춰 있습니다. 직접 로그인하세요.", true);
+      return;
+    }
+    // 자동 제출 직후 로그인 화면이 다시 떴다 = 로그인 실패. 계정 잠김을 막기 위해 멈춘다.
+    if (state.submittedAt && Date.now() - state.submittedAt < FAIL_WINDOW_MS) {
+      save({ failed: true });
+      showBanner("자동 로그인이 실패해서 멈췄습니다. 비밀번호가 바뀌었다면 크롬에 저장된 비밀번호를 고친 뒤 다시 켜세요.", true);
+      return;
+    }
+    // 다른 명지대 사이트(아스트라(LMS), MSI 등)에서 넘어온 로그인 화면일 때만 자동 로그인한다.
+    if (!params.get("client_id")) return;
+
+    navigator.credentials
+      .get({ password: true, mediation: "silent" })
+      .then((cred) => {
+        if (!cred || !cred.password) {
+          showBanner("크롬에서 저장된 계정을 받지 못했습니다. 크롬 설정의 '비밀번호 입력 시 화면 잠금 사용'이 꺼져 있는지 확인하세요.");
+          return;
+        }
+        setValue(fields.userId, cred.id);
+        setValue(fields.password, cred.password);
+        save({ submittedAt: Date.now() });
+        // 암호화는 페이지 스크립트가 제출 시점에 하므로 버튼 클릭으로 그 흐름을 그대로 탄다.
+        if (fields.submit) fields.submit.click();
+        else fields.form.requestSubmit();
+      })
+      .catch(() => {
+        showBanner("크롬에서 저장된 계정을 받는 중 오류가 났습니다. 직접 로그인하세요.");
+      });
+  }
+
+  // 팝업에서 끈 상태면 아무것도 하지 않는다. 설정값은 gate.js가 <html> 속성으로 넘겨준다.
+  function whenEnabled(callback) {
+    const check = () => {
+      if (document.documentElement.dataset.mjuAutoLogin === "on") callback();
+    };
+    if (document.documentElement.dataset.mjuAutoLogin) check();
+    else document.addEventListener("mju-auto-login:ready", check, { once: true });
+  }
 
   // 지금 SSO 페이지의 이름표로 먼저 찾고, 이름이 바뀌었으면 폼 구조로 찾는다.
   function findLoginFields() {

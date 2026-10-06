@@ -9,7 +9,29 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
   "content_scripts": [
+    {
+      "matches": [
+        "https://lms.mju.ac.kr/*",
+        "https://sso.mju.ac.kr/*"
+      ],
+      "js": [
+        "src/gate.js"
+      ],
+      "run_at": "document_start"
+    },
     {
       "matches": [
         "https://lms.mju.ac.kr/ilos/main/member/login_form.acl*"
