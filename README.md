@@ -1,6 +1,4 @@
-<div align="center">
-
-<img src="docs/images/logo.png" width="140" alt="MJU Auto Login 로고">
+![MJU Auto Login 로고](icons/icon128.png)
 
 # MJU Auto Login
 
@@ -12,15 +10,15 @@
 [![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](manifest.json)
 [![Privacy](https://img.shields.io/badge/data-stays_local-success.svg)](PRIVACY.md)
 
-</div>
-
 MJU Auto Login은 명지대학교 아스트라(LMS), MSI 등 통합로그인(SSO)을 사용하는 사이트에 로그아웃 상태로 접속했을 때, 크롬에 저장된 계정으로 로그인 과정을 자동으로 진행하는 크롬 확장 프로그램입니다. 브라우저를 다시 열 때마다 반복하던 여러번의 클릭이 필요 없어집니다.
+
+![북마크에서 아스트라를 누르면 통합로그인과 비밀번호 변경 안내를 자동으로 지나 메인 화면에 도착한다](docs/images/demo.gif)
+
+북마크를 누른 순간부터 아스트라 메인 화면이 뜨기까지 3초가 채 걸리지 않습니다(2.86초).
 
 자동 로그인은 언제든 켜고 끌 수 있습니다. 크롬 툴바에서 확장 프로그램 아이콘을 누르면 나오는 창의 스위치로 설정하며, 꺼 두면 확장 프로그램이 없을 때와 똑같이 동작합니다. 설정은 브라우저를 다시 열어도 유지됩니다.
 
-<p align="center">
-<img src="docs/images/popup.png" width="320" alt="툴바의 확장 프로그램 아이콘을 누르면 자동 로그인 스위치가 있는 창이 열린다">
-</p>
+![툴바의 확장 프로그램 아이콘을 누르면 자동 로그인 스위치가 있는 창이 열린다](docs/images/popup.png)
 
 ## 사용법
 
@@ -30,14 +28,13 @@ MJU Auto Login은 명지대학교 아스트라(LMS), MSI 등 통합로그인(SSO
 
 먼저 [명지대 통합로그인](https://sso.mju.ac.kr)에서 한 번 직접 로그인합니다. 로그인하면 크롬이 비밀번호를 저장할지 묻는데, 이때 반드시 **저장**을 눌러야 합니다. 이 창을 닫거나 "사용하지 않음"을 누르면 확장 프로그램이 받아 올 계정이 없어 자동 로그인이 동작하지 않습니다.
 
-<img src="docs/images/save-password-prompt.png" width="420" alt="처음 로그인할 때 크롬이 비밀번호 저장을 묻는 창에서 저장 버튼을 누른다">
+![처음 로그인할 때 크롬이 비밀번호 저장을 묻는 창에서 저장 버튼을 누른다](docs/images/save-password-prompt.png)
 
 저장이 되었는지는 `chrome://password-manager/passwords`에서 `mju`로 검색해 확인할 수 있습니다. 목록에 `mju.ac.kr` 항목이 있고, 그 항목을 열었을 때 사이트 목록에 `sso.mju.ac.kr`이 포함되어 있으면 됩니다. 이 사이트에 저장된 계정이 둘 이상이면 크롬이 어느 계정을 넘겨줄지 결정할 수 없으므로, 계정은 하나만 저장되어 있어야 합니다.
 
-<p>
-<img src="docs/images/saved-password-list.png" width="49%" alt="비밀번호 관리자에서 mju로 검색하면 mju.ac.kr 항목이 보인다">
-<img src="docs/images/saved-password-detail.png" width="49%" alt="mju.ac.kr 항목의 사이트 목록에 sso.mju.ac.kr이 포함되어 있다">
-</p>
+| 목록에서 `mju.ac.kr` 확인 | 사이트 목록에서 `sso.mju.ac.kr` 확인 |
+|---|---|
+| ![비밀번호 관리자에서 mju로 검색하면 mju.ac.kr 항목이 보인다](docs/images/saved-password-list.png) | ![mju.ac.kr 항목의 사이트 목록에 sso.mju.ac.kr이 포함되어 있다](docs/images/saved-password-detail.png) |
 
 다음으로 `chrome://password-manager/settings`에서 두 가지 설정을 확인합니다. **자동으로 로그인**은 켜져 있어야 하고, **비밀번호 입력 시 화면 잠금 사용**은 꺼져 있어야 합니다. 화면 잠금이 켜져 있으면 크롬은 저장된 비밀번호를 쓸 때마다 지문 같은 생체 인증이나 기기 암호를 요구하므로, 자동 로그인이 동작하지 않습니다.
 
@@ -65,24 +62,11 @@ MJU Auto Login은 명지대학교 아스트라(LMS), MSI 등 통합로그인(SSO
 
 명지대 아스트라(LMS)는 브라우저를 닫았다가 다시 열면 항상 로그아웃되어 있습니다. 다시 접속하려면 "접속이 종료되었습니다"라는 알림을 닫고, 로그인 페이지로 이동해 저장된 계정을 고른 뒤 로그인 버튼을 누릅니다. 그러고 나면 매번 비밀번호 변경을 권하는 페이지가 나타나므로 취소 버튼까지 눌러야 비로소 아스트라 메인에 도착합니다. 강의 하나를 보기 위해 매번 다섯 번의 클릭을 거쳐야 했습니다.
 
-<table>
-<tr>
-<td width="50%"><img src="docs/images/journey-1-alert.png" alt="1. 접속이 종료되었다는 알림에서 확인을 누른다"></td>
-<td width="50%"><img src="docs/images/journey-2-lms-login.png" alt="2. 아스트라 로그인 화면에서 통합로그인 서비스를 누른다"></td>
-</tr>
-<tr>
-<td align="center">① "접속이 종료되었습니다" 알림 닫기</td>
-<td align="center">② 아스트라 로그인 화면에서 통합로그인으로 이동</td>
-</tr>
-<tr>
-<td width="50%"><img src="docs/images/journey-3-sso-login.png" alt="3. 통합로그인 화면에서 계정을 고르고 로그인을 누른다"></td>
-<td width="50%"><img src="docs/images/journey-4-change-pw.png" alt="4. 비밀번호 변경 안내 화면에서 취소를 누른다"></td>
-</tr>
-<tr>
-<td align="center">③ 계정 선택 후 로그인</td>
-<td align="center">④ 비밀번호 변경 안내에서 취소</td>
-</tr>
-</table>
+| ① "접속이 종료되었습니다" 알림 닫기 | ② 아스트라 로그인 화면에서 통합로그인으로 이동 |
+|---|---|
+| ![접속이 종료되었다는 알림에서 확인을 누른다](docs/images/journey-1-alert.png) | ![아스트라 로그인 화면에서 통합로그인 서비스를 누른다](docs/images/journey-2-lms-login.png) |
+| **③ 계정 선택 후 로그인** | **④ 비밀번호 변경 안내에서 취소** |
+| ![통합로그인 화면에서 계정을 고르고 로그인을 누른다](docs/images/journey-3-sso-login.png) | ![비밀번호 변경 안내 화면에서 취소를 누른다](docs/images/journey-4-change-pw.png) |
 
 그래서 처음에는 이 문제를 "로그인 상태가 유지되지 않는다"로 보았습니다. 브라우저를 닫아도 로그인이 남아 있게 만들 수 있다면 위의 과정 자체가 필요 없어지기 때문입니다.
 
