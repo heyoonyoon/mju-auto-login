@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "명지대 LMS 자동 로그인",
+  "version": "0.1.0",
+  "description": "LMS가 로그아웃 상태면 크롬에 저장된 SSO 계정으로 자동 로그인합니다.",
+  "content_scripts": [
+    {
+      "matches": ["https://lms.mju.ac.kr/ilos/main/member/login_form.acl*"],
+      "js": ["src/lms-login-form.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["https://lms.mju.ac.kr/ilos/*"],
+      "js": ["src/lms-session-alert.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://sso.mju.ac.kr/sso/*"],
+      "js": ["src/sso.js"],
+      "run_at": "document_idle",
+      "world": "MAIN"
+    }
+  ]
+}
