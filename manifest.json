@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "명지대 LMS 자동 로그인",
+  "name": "명지대 아스트라(LMS) 자동 로그인",
   "version": "0.1.0",
-  "description": "명지대 LMS·MSI 등 통합로그인 사이트에 크롬에 저장된 계정으로 자동 로그인합니다. (비공식)",
+  "description": "명지대 아스트라(LMS)·MSI 등 통합로그인 사이트에 크롬에 저장된 계정으로 자동 로그인합니다. (비공식)",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",

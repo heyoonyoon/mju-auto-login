@@ -1,4 +1,4 @@
-// LMS 로그인 화면(= 로그아웃 상태)에 오면 SSO 로그인 흐름으로 보낸다.
+// 아스트라(LMS) 로그인 화면(= 로그아웃 상태)에 오면 SSO 로그인 흐름으로 보낸다.
 (() => {
   const KEY = "mjuAutoLoginRedirects";
   const WINDOW_MS = 60 * 1000;

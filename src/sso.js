@@ -49,7 +49,7 @@
     showBanner("자동 로그인이 실패해서 멈췄습니다. 비밀번호가 바뀌었다면 크롬에 저장된 비밀번호를 고친 뒤 다시 켜세요.", true);
     return;
   }
-  // 다른 명지대 사이트(LMS, MSI 등)에서 넘어온 로그인 화면일 때만 자동 로그인한다.
+  // 다른 명지대 사이트(아스트라(LMS), MSI 등)에서 넘어온 로그인 화면일 때만 자동 로그인한다.
   if (!params.get("client_id")) return;
 
   navigator.credentials
@@ -109,7 +109,7 @@
     banner.style.cssText =
       "position:fixed;top:0;left:0;right:0;z-index:2147483647;padding:12px 16px;" +
       "background:#b3261e;color:#fff;font:14px/1.4 sans-serif;text-align:center;";
-    banner.textContent = "[LMS 자동 로그인] " + text + " ";
+    banner.textContent = "[명지대 자동 로그인] " + text + " ";
     if (withResume) {
       const resume = document.createElement("button");
       resume.textContent = "자동 로그인 다시 켜기";
