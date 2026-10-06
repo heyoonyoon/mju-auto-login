@@ -5,9 +5,6 @@
 **명지대 통합로그인, 이제 클릭 없이.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Manifest V3](https://img.shields.io/badge/Manifest-V3-4285F4?logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](src)
-[![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)](manifest.json)
 [![Privacy](https://img.shields.io/badge/data-stays_local-success.svg)](PRIVACY.md)
 
 MJU Auto Login은 명지대학교 아스트라(LMS), MSI 등 통합로그인(SSO)을 사용하는 사이트에 로그아웃 상태로 접속했을 때, 크롬에 저장된 계정으로 로그인 과정을 자동으로 진행하는 크롬 확장 프로그램입니다. 브라우저를 다시 열 때마다 반복하던 여러번의 클릭이 필요 없어집니다.
