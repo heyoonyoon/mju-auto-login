@@ -59,6 +59,25 @@ MJU Auto Login은 명지대학교 LMS, MSI 등 통합로그인(SSO)을 사용하
 
 명지대 LMS는 브라우저를 닫았다가 다시 열면 항상 로그아웃되어 있습니다. 다시 접속하려면 "접속이 종료되었습니다"라는 알림을 닫고, 로그인 페이지로 이동해 저장된 계정을 고른 뒤 지문을 인증하고, 로그인 버튼을 누릅니다. 그러고 나면 매번 비밀번호 변경을 권하는 페이지가 나타나므로 취소 버튼까지 눌러야 비로소 LMS 메인에 도착합니다. 강의 하나를 보기 위해 매번 다섯 번의 클릭과 한 번의 지문 인증을 거쳐야 했습니다.
 
+<table>
+<tr>
+<td width="50%"><img src="docs/images/journey-1-alert.png" alt="1. 접속이 종료되었다는 알림에서 확인을 누른다"></td>
+<td width="50%"><img src="docs/images/journey-2-lms-login.png" alt="2. LMS 로그인 화면에서 통합로그인 서비스를 누른다"></td>
+</tr>
+<tr>
+<td align="center">① "접속이 종료되었습니다" 알림 닫기</td>
+<td align="center">② LMS 로그인 화면에서 통합로그인으로 이동</td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/images/journey-3-sso-login.png" alt="3. 통합로그인 화면에서 계정을 고르고 지문 인증 후 로그인을 누른다"></td>
+<td width="50%"><img src="docs/images/journey-4-change-pw.png" alt="4. 비밀번호 변경 안내 화면에서 취소를 누른다"></td>
+</tr>
+<tr>
+<td align="center">③ 계정 선택과 지문 인증 후 로그인</td>
+<td align="center">④ 비밀번호 변경 안내에서 취소</td>
+</tr>
+</table>
+
 그래서 처음에는 이 문제를 "로그인 상태가 유지되지 않는다"로 보았습니다. 브라우저를 닫아도 로그인이 남아 있게 만들 수 있다면 위의 과정 자체가 필요 없어지기 때문입니다.
 
 ### 조사하며 발견한 한계
