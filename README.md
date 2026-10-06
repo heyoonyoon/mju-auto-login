@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="icons/icon128.png" width="96" alt="MJU Auto Login 아이콘">
+<img src="docs/images/logo.png" width="140" alt="MJU Auto Login 로고">
 
 # MJU Auto Login
 
@@ -22,7 +22,16 @@ MJU Auto Login은 명지대학교 LMS, MSI 등 통합로그인(SSO)을 사용하
 
 이 확장 프로그램은 크롬 비밀번호 관리자에 저장된 계정을 받아서 로그인합니다. 따라서 설치에 앞서 크롬에 계정이 저장되어 있어야 하고, 크롬이 그 계정을 확장 프로그램에 넘겨줄 수 있도록 설정되어 있어야 합니다.
 
-먼저 [명지대 통합로그인](https://sso.mju.ac.kr)에서 한 번 직접 로그인하고, 크롬이 비밀번호 저장 여부를 물으면 저장합니다. 이 사이트에 저장된 계정이 둘 이상이면 크롬이 어느 계정을 넘겨줄지 결정할 수 없으므로, 계정은 하나만 저장되어 있어야 합니다.
+먼저 [명지대 통합로그인](https://sso.mju.ac.kr)에서 한 번 직접 로그인합니다. 로그인하면 크롬이 비밀번호를 저장할지 묻는데, 이때 반드시 **저장**을 눌러야 합니다. 이 창을 닫거나 "사용하지 않음"을 누르면 확장 프로그램이 받아 올 계정이 없어 자동 로그인이 동작하지 않습니다.
+
+<img src="docs/images/save-password-prompt.png" width="420" alt="처음 로그인할 때 크롬이 비밀번호 저장을 묻는 창에서 저장 버튼을 누른다">
+
+저장이 되었는지는 `chrome://password-manager/passwords`에서 `mju`로 검색해 확인할 수 있습니다. 목록에 `mju.ac.kr` 항목이 있고, 그 항목을 열었을 때 사이트 목록에 `sso.mju.ac.kr`이 포함되어 있으면 됩니다. 이 사이트에 저장된 계정이 둘 이상이면 크롬이 어느 계정을 넘겨줄지 결정할 수 없으므로, 계정은 하나만 저장되어 있어야 합니다.
+
+<p>
+<img src="docs/images/saved-password-list.png" width="49%" alt="비밀번호 관리자에서 mju로 검색하면 mju.ac.kr 항목이 보인다">
+<img src="docs/images/saved-password-detail.png" width="49%" alt="mju.ac.kr 항목의 사이트 목록에 sso.mju.ac.kr이 포함되어 있다">
+</p>
 
 다음으로 `chrome://password-manager/settings`에서 두 가지 설정을 확인합니다. **자동으로 로그인**은 켜져 있어야 하고, **비밀번호 입력 시 화면 잠금 사용**은 꺼져 있어야 합니다. 화면 잠금이 켜져 있으면 크롬은 지문 인증 없이는 저장된 비밀번호를 내주지 않으므로 자동 로그인이 동작하지 않습니다.
 
