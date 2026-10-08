@@ -1,11 +1,13 @@
 // 명지대 SSO 페이지
-// - 로그인 화면(어느 명지대 사이트에서 왔든):크롬 비밀번호 관리자에서 계정을 받아 채우고 로그인 버튼을 누른다.
+// - 로그인 화면(어느 명지대 사이트에서 왔든):브라우저 비밀번호 관리자에서 계정을 받아 채우고 로그인 버튼을 누른다.
+//   엣지처럼 계정을 넘겨주지 않는 브라우저는 브라우저가 채워 둔 칸을 그대로 제출한다.
 // - 비밀번호 변경 안내: 방금 자동 로그인한 경우에만 취소 버튼과 같은 주소로 넘어간다.
 // 팝업에서 꺼 두면 아무것도 하지 않는다.
 // 비밀번호는 저장하지 않는다. 상태 표시(제출 시각, 실패 여부)만 localStorage에 둔다.
 (() => {
   const KEY = "mjuAutoLogin";
-  const FAIL_WINDOW_MS = 60 * 1000;
+  // 비밀번호가 틀리면 로그인 화면은 몇 초 안에 다시 뜬다. 길게 잡으면 로그인 직후 직접 로그아웃한 것도 실패로 착각한다.
+  const FAIL_WINDOW_MS = 15 * 1000;
 
   const load = () => {
     try {
@@ -58,21 +60,61 @@
 
     navigator.credentials
       .get({ password: true, mediation: "silent" })
-      .then((cred) => {
-        if (!cred || !cred.password) {
-          showBanner("크롬에서 저장된 계정을 받지 못했습니다. 크롬 설정의 '비밀번호 입력 시 화면 잠금 사용'이 꺼져 있는지 확인하세요.");
+      .then(async (cred) => {
+        if (cred && cred.password) {
+          setValue(fields.userId, cred.id);
+          setValue(fields.password, cred.password);
+          submit(fields);
           return;
         }
-        setValue(fields.userId, cred.id);
-        setValue(fields.password, cred.password);
-        save({ submittedAt: Date.now() });
-        // 암호화는 페이지 스크립트가 제출 시점에 하므로 버튼 클릭으로 그 흐름을 그대로 탄다.
-        if (fields.submit) fields.submit.click();
-        else fields.form.requestSubmit();
+        // 엣지는 계정을 넘겨주지 않는 대신 칸을 직접 채워 둔다. 채워져 있으면 잠금을 풀고 그 값으로 제출한다.
+        if (isAutofilled(fields) && (await unlockAutofill()) && (await waitForValues(fields))) {
+          submit(fields);
+          return;
+        }
+        showBanner(
+          "브라우저에서 저장된 계정을 받지 못했습니다. 계정이 저장되어 있는지, " +
+            "크롬은 '비밀번호 입력 시 화면 잠금 사용', 엣지는 '디바이스 로그인 옵션을 묻는' 설정이 꺼져 있는지 확인하세요."
+        );
       })
       .catch(() => {
-        showBanner("크롬에서 저장된 계정을 받는 중 오류가 났습니다. 직접 로그인하세요.");
+        showBanner("브라우저에서 저장된 계정을 받는 중 오류가 났습니다. 직접 로그인하세요.");
       });
+  }
+
+  function submit(fields) {
+    save({ submittedAt: Date.now() });
+    // 암호화는 페이지 스크립트가 제출 시점에 하므로 버튼 클릭으로 그 흐름을 그대로 탄다.
+    if (fields.submit) fields.submit.click();
+    else fields.form.requestSubmit();
+  }
+
+  function isAutofilled(fields) {
+    try {
+      return fields.password.matches(":autofill");
+    } catch {
+      return fields.password.matches(":-webkit-autofill");
+    }
+  }
+
+  // background.js가 디버거로 사용자 입력 표시를 한 번 보내 주면 자동 채움 값이 페이지에 풀린다.
+  function unlockAutofill() {
+    return new Promise((resolve) => {
+      document.addEventListener("mju-auto-login:unlocked", (e) => resolve(e.detail === true), { once: true });
+      document.dispatchEvent(new CustomEvent("mju-auto-login:unlock"));
+    });
+  }
+
+  function waitForValues(fields, timeoutMs = 2000) {
+    return new Promise((resolve) => {
+      const start = Date.now();
+      const check = () => {
+        if (fields.userId.value && fields.password.value) resolve(true);
+        else if (Date.now() - start > timeoutMs) resolve(false);
+        else setTimeout(check, 100);
+      };
+      check();
+    });
   }
 
   // 팝업에서 끈 상태면 아무것도 하지 않는다. 설정값은 gate.js가 <html> 속성으로 넘겨준다.
