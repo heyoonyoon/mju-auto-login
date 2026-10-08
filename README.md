@@ -22,15 +22,7 @@ MJU Auto Login은 명지대학교 아스트라(LMS), MSI 등 통합로그인(SSO
 
 [https://chromewebstore.google.com/detail/mhhpalifnkkbgoonlnnpcojllkiblbca](https://chromewebstore.google.com/detail/mhhpalifnkkbgoonlnnpcojllkiblbca)
 
-엣지에서도 같은 페이지에서 설치할 수 있으며, 처음 한 번 "다른 스토어의 확장 허용"을 눌러야 합니다.
-
-엣지 지원은 0.3.0 버전부터 들어갑니다. 스토어에 0.3.0이 반영되기 전에 엣지에서 쓰려면 직접 설치해야 합니다.
-
-1. 이 저장소를 내려받아 압축을 풉니다. (`Code` → `Download ZIP`)
-2. 주소창에 `chrome://extensions`(엣지는 `edge://extensions`)를 입력하고 **개발자 모드**를 켭니다.
-3. **압축해제된 확장 프로그램 로드**(엣지는 **압축 풀린 확장 로드**)를 누르고, 압축을 푼 폴더를 선택합니다.
-
-
+**엣지에서도 같은 페이지에서 설치할 수 있으며,** 처음 한 번 "다른 스토어의 확장 허용"을 눌러야 합니다.
 
 ## ⚡ 북마크 클릭부터 아스트라 메인 화면까지 **1.03초**
 
