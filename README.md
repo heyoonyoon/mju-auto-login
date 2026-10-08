@@ -16,9 +16,13 @@ MJU Auto Login은 명지대학교 아스트라(LMS), MSI 등 통합로그인(SSO
 브라우저에 저장된 계정으로 로그인 과정을 자동으로 진행하는 확장 프로그램입니다.  
 브라우저를 다시 열 때마다 반복하던 여러 번의 클릭이 필요 없어집니다.
 
-## 설치 [크롬 웹 스토어](https://chromewebstore.google.com/detail/mhhpalifnkkbgoonlnnpcojllkiblbca)
+## 설치
 
-## 에서 설치합니다. 엣지에서도 같은 페이지에서 설치할 수 있으며, 처음 한 번 "다른 스토어의 확장 허용"을 눌러야 합니다.
+아래 크롬 웹 스토어 주소에서 설치합니다.
+
+[https://chromewebstore.google.com/detail/mhhpalifnkkbgoonlnnpcojllkiblbca](https://chromewebstore.google.com/detail/mhhpalifnkkbgoonlnnpcojllkiblbca)
+
+엣지에서도 같은 페이지에서 설치할 수 있으며, 처음 한 번 "다른 스토어의 확장 허용"을 눌러야 합니다.
 
 엣지 지원은 0.3.0 버전부터 들어갑니다. 스토어에 0.3.0이 반영되기 전에 엣지에서 쓰려면 직접 설치해야 합니다.
 
