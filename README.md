@@ -4,7 +4,7 @@
 
 **명지대 통합로그인, 이제 클릭 없이.**
 
-![Chrome Web Store](https://img.shields.io/chrome-web-store/v/mhhpalifnkkbgoonlnnpcojllkiblbca?label=Chrome%20Web%20Store) ![Browsers](https://img.shields.io/badge/browsers-Chrome%20%7C%20Edge-blue.svg)
+![Version](https://img.shields.io/badge/version-0.3.0-blue.svg) ![Browsers](https://img.shields.io/badge/browsers-Chrome%20%7C%20Edge-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Privacy](https://img.shields.io/badge/data-stays_local-success.svg)
 
