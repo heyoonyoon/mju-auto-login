@@ -1,7 +1,7 @@
 // 명지대 SSO 페이지
 // - 로그인 화면(어느 명지대 사이트에서 왔든):브라우저 비밀번호 관리자에서 계정을 받아 채우고 로그인 버튼을 누른다.
 //   엣지처럼 계정을 넘겨주지 않는 브라우저는 브라우저가 채워 둔 칸을 그대로 제출한다.
-// - 비밀번호 변경 안내: 방금 자동 로그인한 경우에만 취소 버튼과 같은 주소로 넘어간다.
+// - 비밀번호 변경 안내: 방금 자동 로그인한 경우에만 취소 버튼과 같은 주소로 넘어간다. 팝업에서 끌 수 있다.
 // 팝업에서 꺼 두면 아무것도 하지 않는다.
 // 비밀번호는 저장하지 않는다. 상태 표시(제출 시각, 실패 여부)만 localStorage에 둔다.
 (() => {
@@ -37,6 +37,7 @@
       const id = params.get("cm_cg_id");
       if (id && state.submittedAt) {
         clear();
+        if (document.documentElement.dataset.mjuSkipPwChange === "off") return;
         location.replace("/sso/auth?cm_cg_id=" + encodeURIComponent(id));
       }
       return;

@@ -52,6 +52,21 @@ header p {
   color: var(--muted);
 }
 
+.row.sub strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.row.sub small {
+  font-size: 11px;
+}
+
+/* 자동 로그인이 꺼져 있으면 세부 설정은 쓸 일이 없으므로 흐리게 */
+.row.off {
+  opacity: 0.45;
+  cursor: default;
+}
+
 /* 체크박스를 스위치 모양으로 */
 input[role="switch"] {
   appearance: none;
@@ -75,6 +90,10 @@ input[role="switch"]::after {
   border-radius: 50%;
   background: #fff;
   transition: transform 0.15s;
+}
+
+input[role="switch"]:disabled {
+  cursor: default;
 }
 
 input[role="switch"]:checked {
