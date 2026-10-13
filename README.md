@@ -2,6 +2,8 @@
 
 # MJU Auto Login
 
+### 명지대 통합로그인(SSO) 자동 로그인 – 아스트라(LMS)·MSI
+
 **명지대 통합로그인, 이제 클릭 없이.**
 
 ![Version](https://img.shields.io/badge/version-0.4.0-blue.svg) ![Browsers](https://img.shields.io/badge/browsers-Chrome%20%7C%20Edge-blue.svg)
