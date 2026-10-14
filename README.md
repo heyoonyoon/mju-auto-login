@@ -6,7 +6,7 @@
 
 **명지대 통합로그인, 이제 클릭 없이.**
 
-![Version](https://img.shields.io/badge/version-0.4.0-blue.svg) ![Browsers](https://img.shields.io/badge/browsers-Chrome%20%7C%20Edge-blue.svg)
+![Version](https://img.shields.io/badge/version-0.5.0-blue.svg) ![Browsers](https://img.shields.io/badge/browsers-Chrome%20%7C%20Edge-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Privacy](https://img.shields.io/badge/data-stays_local-success.svg)
 
@@ -145,9 +145,15 @@ MJU Auto Login은 명지대학교 아스트라(LMS), MSI 등 통합로그인(SSO
 
 ## 켜고 끄기
 
-자동 로그인은 언제든 켜고 끌 수 있습니다. 브라우저 툴바에서 확장 프로그램 아이콘을 누르면 나오는 창의 스위치로 설정하며, 꺼 두면 확장 프로그램이 없을 때와 똑같이 동작합니다. 설정은 브라우저를 다시 열어도 유지됩니다.
+브라우저 툴바에서 확장 프로그램 아이콘을 누르면 나오는 창에서 설정합니다. 설정은 브라우저를 다시 열어도 유지됩니다.
 
-![툴바의 확장 프로그램 아이콘을 누르면 자동 로그인 스위치가 있는 창이 열린다](docs/images/popup.png)
+- **자동 로그인**: 꺼 두면 확장 프로그램이 없을 때와 똑같이 동작합니다. 아래 설정도 함께 꺼집니다.
+- **비밀번호 변경 안내 건너뛰기** (기본 켜짐): 로그인 뒤 나오는 비밀번호 변경 안내를 자동으로 넘깁니다. 끄면 안내 화면에서 멈춥니다.
+- **공지 창 자동으로 닫기** (기본 켜짐): 아스트라(LMS) 메인에 뜨는 "나를 위한 공지" 창을 닫습니다. 닫는 방식을 고를 수 있습니다.
+  - **한 번만 닫기** (기본): X 버튼으로 닫습니다. 다른 기기에서는 공지가 그대로 보입니다.
+  - **오늘 하루 보지 않기**: 그날은 공지 창이 다시 뜨지 않습니다.
+
+![툴바의 확장 프로그램 아이콘을 누르면 자동 로그인, 비밀번호 변경 안내, 공지 창 설정이 있는 창이 열린다](docs/images/popup.png)
 
 ## 개인정보
 
