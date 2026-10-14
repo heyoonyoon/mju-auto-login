@@ -57,6 +57,15 @@
     },
     {
       "matches": [
+        "https://lms.mju.ac.kr/ilos/main/main_form.acl*"
+      ],
+      "js": [
+        "src/lms-notice.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
         "https://sso.mju.ac.kr/sso/*"
       ],
       "js": [
