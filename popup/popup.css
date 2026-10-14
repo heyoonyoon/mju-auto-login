@@ -61,6 +61,51 @@ header p {
   font-size: 11px;
 }
 
+/* 공지 창 닫는 방식: 두 칸짜리 선택 버튼. 위 스위치와 한 덩어리로 보이게 사이 줄을 없앤다. */
+.row:has(+ .row.choice) {
+  border-bottom: none;
+}
+
+.row.choice {
+  gap: 0;
+  padding: 0 16px 16px;
+  margin-top: -6px;
+  cursor: default;
+}
+
+.row.choice label {
+  flex: 1;
+  padding: 6px 0;
+  border: 1px solid var(--line);
+  font-size: 12px;
+  text-align: center;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.row.choice label:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.row.choice label:last-child {
+  border-left: none;
+  border-radius: 0 6px 6px 0;
+}
+
+.row.choice input {
+  display: none;
+}
+
+.row.choice label:has(input:checked) {
+  color: #fff;
+  border-color: var(--navy);
+  background: var(--navy);
+}
+
+.row.choice.off label {
+  cursor: default;
+}
+
 /* 자동 로그인이 꺼져 있으면 세부 설정은 쓸 일이 없으므로 흐리게 */
 .row.off {
   opacity: 0.45;
