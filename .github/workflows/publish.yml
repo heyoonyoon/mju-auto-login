@@ -1,0 +1,104 @@
+# 깃허브 릴리스를 만들면 크롬 웹 스토어에 zip을 올리고 심사를 제출한다.
+# 스토어 설명, 스크린샷, 개인정보 탭은 API로 바꿀 수 없으므로 바뀌었다면 대시보드에서 직접 고친다.
+#
+# 필요한 설정 (저장소 Settings → Secrets and variables → Actions)
+# - Secret   CWS_SERVICE_ACCOUNT_JSON : 스토어 대시보드에 등록한 서비스 계정의 JSON 키
+# - Variable CWS_PUBLISHER_ID         : 스토어 대시보드 계정 화면의 게시자 ID
+name: Publish to Chrome Web Store
+
+on:
+  release:
+    types: [published]
+  # 손으로 실행할 때: Actions 탭에서 태그를 고른다. publish를 체크하지 않으면 스토어 상태만 확인한다.
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 스토어에 업로드하고 심사 제출
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  EXTENSION_ID: mhhpalifnkkbgoonlnnpcojllkiblbca
+  API: https://chromewebstore.googleapis.com
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 태그(v0.5.0)와 manifest 버전(0.5.0)이 다르면 엉뚱한 버전이 올라가므로 멈춘다.
+      - name: Check version
+        run: |
+          version=$(jq -r .version manifest.json)
+          echo "manifest version: $version, ref: $GITHUB_REF_NAME"
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::태그 $GITHUB_REF_NAME 와 manifest 버전 $version 이 다릅니다."
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Build zip
+        run: zip -qr extension.zip manifest.json src popup icons -x '.*'
+
+      # 서비스 계정 키로 서명한 JWT를 구글 토큰 주소에 보내 액세스 토큰을 받는다.
+      - name: Get access token
+        env:
+          SA_JSON: ${{ secrets.CWS_SERVICE_ACCOUNT_JSON }}
+        run: |
+          b64url() { openssl base64 -A | tr '+/' '-_' | tr -d '='; }
+          key=$(mktemp)
+          trap 'rm -f "$key"' EXIT
+          jq -r .private_key <<<"$SA_JSON" > "$key"
+          now=$(date +%s)
+          header=$(printf '{"alg":"RS256","typ":"JWT"}' | b64url)
+          claims=$(jq -nc --arg iss "$(jq -r .client_email <<<"$SA_JSON")" --argjson now "$now" \
+            '{iss:$iss, scope:"https://www.googleapis.com/auth/chromewebstore", aud:"https://oauth2.googleapis.com/token", iat:$now, exp:($now+600)}' | b64url)
+          signature=$(printf '%s.%s' "$header" "$claims" | openssl dgst -sha256 -sign "$key" | b64url)
+          token=$(curl -sS --fail-with-body https://oauth2.googleapis.com/token \
+            -d grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer \
+            -d assertion="$header.$claims.$signature" | jq -r .access_token)
+          echo "::add-mask::$token"
+          echo "TOKEN=$token" >> "$GITHUB_ENV"
+
+      - name: Check store status
+        env:
+          ITEM: publishers/${{ vars.CWS_PUBLISHER_ID }}/items/${{ env.EXTENSION_ID }}
+        run: |
+          curl -sS --fail-with-body -H "Authorization: Bearer $TOKEN" "$API/v2/$ITEM:fetchStatus" | tee status.json
+          echo "### 스토어 상태" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          jq . status.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload
+        if: github.event_name == 'release' || inputs.publish
+        env:
+          ITEM: publishers/${{ vars.CWS_PUBLISHER_ID }}/items/${{ env.EXTENSION_ID }}
+        run: |
+          curl -sS --fail-with-body -H "Authorization: Bearer $TOKEN" -X POST -T extension.zip \
+            "$API/upload/v2/$ITEM:upload" | tee upload.json
+          state=$(jq -r .uploadState upload.json)
+          # 처리 중이면 끝날 때까지 기다린다(최대 2분).
+          for _ in $(seq 24); do
+            [ "$state" = IN_PROGRESS ] || break
+            sleep 5
+            state=$(curl -sS --fail-with-body -H "Authorization: Bearer $TOKEN" \
+              "$API/v2/$ITEM:fetchStatus" | jq -r .lastAsyncUploadState)
+          done
+          if [ "$state" != SUCCEEDED ]; then
+            echo "::error::업로드 실패: $state"
+            exit 1
+          fi
+
+      - name: Submit for review
+        if: github.event_name == 'release' || inputs.publish
+        env:
+          ITEM: publishers/${{ vars.CWS_PUBLISHER_ID }}/items/${{ env.EXTENSION_ID }}
+        run: |
+          curl -sS --fail-with-body -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+            -X POST -d '{"publishType":"DEFAULT_PUBLISH"}' "$API/v2/$ITEM:publish" | tee publish.json
+          echo "### $VERSION 심사 제출: $(jq -r .state publish.json)" >> "$GITHUB_STEP_SUMMARY"
